@@ -19,17 +19,23 @@ def main():
         listf.append((int(nums[0]),int(nums[1]),nums[2]))
 
     
-    ydim =  [ x[0] for x in listf]
-    xdim1 = [ x[1] for x in listf]
-    xdim2 = [ x[2] for x in listf] 
+
+
+
     lof = []
-    for i in xrange(max(ydim)+1):
+    maxydim = listf[0][0]
+    for i in ydim:
+        if i[0] > maxydim:
+            maxydim = i[0]
+
+    for i in xrange(maxydim+1):
        lof.append([]) 
     for i in listf:
         lof[i[0]].append((i[1],i[2]))
 
     for cl in xrange(len(lof)):
-
+        if len(lof) is 0:
+            continue
         plt.ylim([-1,len(lof[cl])])
         for i in xrange(len(lof[cl])):
             plt.plot([lof[cl][i][0],lof[cl][i][1]],[i,i],'k-',linewidth=4,color="b", alpha=0.8)
