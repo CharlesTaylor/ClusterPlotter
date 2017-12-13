@@ -7,8 +7,8 @@ from math import log
 from math import sqrt
 from math import floor
 import os
-def distance(p0, p1):
-    return sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
+
+
 def main():
     if len(sys.argv) > 1:
         os.mkdir(sys.argv[1])
@@ -17,11 +17,6 @@ def main():
     for line in sys.stdin:
         nums = line.split()
         listf.append((int(nums[0]),int(nums[1]),nums[2]))
-
-    
-
-
-
     lof = []
     maxydim = listf[0][0]
     for i in ydim:
