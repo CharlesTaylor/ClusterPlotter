@@ -29,7 +29,7 @@ def main():
         lof[i[0]].append((i[1],i[2]))
 
     for cl in xrange(len(lof)):
-        if len(lof) is 0:
+        if len(lof[cl]) is 0:
             continue
         plt.ylim([-1,len(lof[cl])])
         for i in xrange(len(lof[cl])):
