@@ -19,7 +19,7 @@ def main():
         listf.append((int(nums[0]),int(nums[1]),nums[2]))
     lof = []
     maxydim = listf[0][0]
-    for i in ydim:
+    for i in listf:
         if i[0] > maxydim:
             maxydim = i[0]
 
@@ -33,7 +33,7 @@ def main():
             continue
         plt.ylim([-1,len(lof[cl])])
         for i in xrange(len(lof[cl])):
-            plt.plot([lof[cl][i][0],lof[cl][i][1]],[i,i],'k-',linewidth=4,color="b", alpha=0.8)
+            plt.plot([lof[cl][i][0],lof[cl][i][1]],[100,100],'k-',linewidth=1,c=np.random.rand(3,1), alpha=1)
 
 
         plt.title('Cluster {}'.format(cl))
