@@ -7,43 +7,78 @@ from math import log
 from math import sqrt
 from math import floor
 import os
+import pathlib
+class interval:
+    def __init__(self,i1,i2):
+        self.start = i1
+        self.end = i2
+    def __repr__(self):
+        return "{}, {}".format(self.start,self.end)
+class variation:
+    def __init__(self,ch,list_of_intervals):
+        self.ch = ch
+        self.il =list_of_intervals
+    def __repr__(self):
+        return "{}".format(self.il)
+    def distance(self,other):
+        return abs(other.il[0].start - self.il[0].end)
 
+def add_sv(dic,cluster,sv):
+    if cluster not in dic:
+        dic[cluster] = []
+    dic[cluster].append(sv)
 
 def main():
-    if len(sys.argv) > 1:
-        os.mkdir(sys.argv[1])
-    listf = []
+    if len(sys.argv) < 5:
+        print("GB")
+        return
+    
+    pathlib.Path(sys.argv[1]).mkdir(parents=True,exist_ok=True)
+    int_count = int(sys.argv[2])
+    colors = sys.argv[3].split(":")
 
+    
+    listv = {}
     for line in sys.stdin:
         nums = line.split()
-        listf.append((int(nums[0]),int(nums[1]),nums[2]))
-    lof = []
-    maxydim = listf[0][0]
-    for i in listf:
-        if i[0] > maxydim:
-            maxydim = i[0]
+        iter = 1
+        il = []
+        while iter < len(nums)-1:
+            il.append(interval(int(nums[iter]),int(nums[iter+1])))
+            iter+=2
+        add_sv(listv,nums[-1],variation(nums[0],il))
+    
 
-    for i in xrange(maxydim+1):
-       lof.append([]) 
-    for i in listf:
-        lof[i[0]].append((i[1],i[2]))
-
-    for cl in xrange(len(lof)):
-        if len(lof[cl]) is 0:
-            continue
-        plt.ylim([-1,len(lof[cl])])
-        for i in xrange(len(lof[cl])):
-            plt.plot([lof[cl][i][0],lof[cl][i][1]],[100,100],'k-',linewidth=1,c=np.random.rand(3,1), alpha=1)
+    for ll in listv.values():
+        ll.sort(key= lambda x:x.il[0].start)
+    count = 0
+#    plt.xlim([97959560, 97991129])
+#    plt.ylim([-1,len(listv)])
+    for ll in listv.values():
+        first = ll[0]
+        break
 
 
-        plt.title('Cluster {}'.format(cl))
-        plt.xlabel("Position")
-        plt.ylabel("Deletions")
-        if(len(sys.argv) is 1):
-            plt.savefig("newclusters/cl{}.png".format(cl)) 
-        else:
-            plt.savefig(sys.argv[1] + "/cl{}.png".format(cl))
-        plt.clf()
+    cl = 1
+    for ll in listv.values():
 
+        for var in ll:
+            for i in range(len(var.il)):
+            #    print(var.il[i],count)
+                plt.plot([var.il[i].start,var.il[i].end],[count,count],"-",linewidth=4,c=colors[i])
+            count+=1
+        var = ll[-1]
         
+        count+=10
+
+        if( first.distance(var) > int(sys.argv[4])):
+
+            plt.title('Cluster {}'.format(cl))
+            plt.xlabel("Position")
+            plt.ylabel("Deletions")
+            plt.savefig(sys.argv[1] + "/cl{}.png".format(cl))
+            plt.clf()
+            cl+=1
+            first=var    
+            count = 0
 main()
